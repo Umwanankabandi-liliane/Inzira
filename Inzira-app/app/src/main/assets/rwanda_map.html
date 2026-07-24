@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, #EEF2F8 0%, #F6F8FB 100%);
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .map-wrap {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10px 12px 6px;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    filter: drop-shadow(0 4px 12px rgba(26,58,107,0.12));
+  }
+  .district {
+    stroke: rgba(255,255,255,0.85);
+    stroke-width: 1.2;
+    cursor: pointer;
+    transition: filter 0.15s ease, stroke-width 0.15s ease;
+  }
+  .district:active { filter: brightness(0.92); }
+  .district.selected {
+    stroke: #1A3A6B;
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 4px rgba(26,58,107,0.45));
+  }
+  .district.level-very_low { fill: #E8F0FE; }
+  .district.level-low { fill: #B8D4F0; }
+  .district.level-medium { fill: #6BA3E0; }
+  .district.level-high { fill: #2E5FA3; }
+  .district.level-very_high { fill: #1A3A6B; }
+  .outline {
+    fill: none;
+    stroke: #C5D4E8;
+    stroke-width: 1.5;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div class="map-wrap">
+<svg viewBox="0 0 132 176" preserveAspectRatio="xMidYMid meet" id="svgMap">
+  <path class="outline" d="M8,28 L18,8 L48,4 L78,6 L108,14 L124,38 L128,72 L122,108 L110,138 L88,158 L58,168 L32,162 L14,142 L6,108 L4,72 L8,28 Z"/>
+  <g id="districts"></g>
+</svg>
+</div>
+<script>
+/* Approximate Rwanda layout — taller north-south, Kigali centre-east, no labels on map */
+const GEO = {
+  Musanze:    { x: 38, y: 10, w: 18, h: 14, rx: 4 },
+  Burera:     { x: 58, y: 8,  w: 18, h: 14, rx: 4 },
+  Gakenke:    { x: 78, y: 12, w: 18, h: 14, rx: 4 },
+  Rulindo:    { x: 98, y: 18, w: 18, h: 14, rx: 4 },
+  Gicumbi:    { x: 108,y: 34, w: 18, h: 14, rx: 4 },
+  Rubavu:     { x: 6,  y: 28, w: 18, h: 14, rx: 4 },
+  Nyabihu:    { x: 24, y: 22, w: 16, h: 14, rx: 4 },
+  Rutsiro:    { x: 28, y: 38, w: 16, h: 14, rx: 4 },
+  Ngororero:  { x: 44, y: 34, w: 16, h: 14, rx: 4 },
+  Rusizi:     { x: 6,  y: 52, w: 18, h: 16, rx: 4 },
+  Karongi:    { x: 24, y: 54, w: 18, h: 14, rx: 4 },
+  Gasabo:     { x: 52, y: 48, w: 18, h: 14, rx: 4 },
+  Kicukiro:   { x: 72, y: 50, w: 18, h: 14, rx: 4 },
+  Nyagatare:  { x: 96, y: 44, w: 20, h: 16, rx: 4 },
+  Gatsibo:    { x: 108,y: 58, w: 18, h: 14, rx: 4 },
+  Nyarugenge: { x: 52, y: 64, w: 18, h: 12, rx: 3 },
+  Kayonza:    { x: 88, y: 68, w: 18, h: 14, rx: 4 },
+  Rwamagana:  { x: 106,y: 72, w: 18, h: 14, rx: 4 },
+  Huye:       { x: 34, y: 78, w: 18, h: 14, rx: 4 },
+  Muhanga:    { x: 52, y: 78, w: 18, h: 14, rx: 4 },
+  Kamonyi:    { x: 70, y: 80, w: 16, h: 14, rx: 4 },
+  Bugesera:   { x: 86, y: 84, w: 18, h: 14, rx: 4 },
+  Kirehe:     { x: 104,y: 88, w: 18, h: 14, rx: 4 },
+  Nyamagabe:  { x: 22, y: 94, w: 18, h: 14, rx: 4 },
+  Nyanza:     { x: 40, y: 94, w: 16, h: 14, rx: 4 },
+  Ruhango:    { x: 56, y: 96, w: 16, h: 14, rx: 4 },
+  Ngoma:      { x: 88, y: 100,w: 18, h: 14, rx: 4 },
+  Gisagara:   { x: 24, y: 110,w: 18, h: 14, rx: 4 },
+  Nyaruguru:  { x: 42, y: 112,w: 18, h: 14, rx: 4 }
+};
+
+let radarData = {};
+let selected = null;
+
+function buildMap() {
+  const g = document.getElementById('districts');
+  g.innerHTML = '';
+  Object.keys(GEO).forEach(name => {
+    const d = GEO[name];
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', d.x);
+    rect.setAttribute('y', d.y);
+    rect.setAttribute('width', d.w);
+    rect.setAttribute('height', d.h);
+    rect.setAttribute('rx', d.rx || 4);
+    rect.setAttribute('class', 'district level-very_low');
+    rect.dataset.district = name;
+    rect.addEventListener('click', () => selectDistrict(name));
+    g.appendChild(rect);
+  });
+}
+
+function applyRadar(data) {
+  radarData = {};
+  (data || []).forEach(d => { radarData[d.district] = d; });
+  document.querySelectorAll('.district').forEach(el => {
+    const name = el.dataset.district;
+    const info = radarData[name];
+    const level = info ? info.level : 'very_low';
+    el.setAttribute('class', 'district level-' + level + (name === selected ? ' selected' : ''));
+  });
+}
+
+function selectDistrict(name) {
+  selected = name;
+  document.querySelectorAll('.district').forEach(el => {
+    el.classList.toggle('selected', el.dataset.district === name);
+  });
+  if (window.AndroidBridge) {
+    AndroidBridge.onDistrictTap(name);
+  }
+}
+
+function setRadarData(json) {
+  try {
+    const parsed = typeof json === 'string' ? JSON.parse(json) : json;
+    applyRadar(parsed);
+  } catch (e) {}
+}
+
+function highlightDistrict(name) {
+  selectDistrict(name);
+}
+
+buildMap();
+</script>
+</body>
+</html>

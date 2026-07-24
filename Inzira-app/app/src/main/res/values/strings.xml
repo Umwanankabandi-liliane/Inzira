@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Inzira</string>
+    <string name="search_icon_description">Search</string>
+    <string name="search_description">Search</string>
+    <string name="notifications_description">Notifications</string>
+    <string name="profile_description">Profile</string>
+    <string name="back_description">Back</string>
+    <string name="filter_description">Filter</string>
+    <string name="bookmark_description">Bookmark website</string>
+    <string name="clear_chat_description">Clear chat</string>
+    <string name="send_description">Send message</string>
+    <string name="add_website_description">Add website</string>
+</resources>

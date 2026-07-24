@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inzira - Find Your Path</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark:  #1A3A6B;
+    --green-mid:   #2E5FA3;
+    --green-light: #4A7FC1;
+    --gold:        #90CAF9;
+    --cream:       #F8FAFF;
+    --white:       #FFFFFF;
+    --gray-light:  #E8EEF6;
+    --gray-mid:    #94A3B8;
+    --gray-text:   #64748B;
+    --red:         #E24B4A;
+    --blue:        #1A3A6B;
+    --shadow:      0 4px 24px rgba(26,58,107,0.10);
+    --shadow-lg:   0 8px 40px rgba(26,58,107,0.16);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--green-dark);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--green-dark);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--gold); }
+
+  .header-tagline {
+    font-size: 13px;
+    color: var(--gray-mid);
+    font-weight: 300;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn-assistant {
+    background: var(--gold);
+    color: var(--green-dark);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-assistant:hover {
+    background: #7BB8E8;
+    transform: translateY(-1px);
+  }
+
+  .hero {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 140%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(245,200,66,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .hero h1 span { color: var(--gold); }
+
+  .hero p {
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  .search-container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .search-box {
+    display: flex;
+    background: var(--white);
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .search-box:focus-within {
+    border-color: var(--gold);
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 16px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: var(--green-dark);
+    background: transparent;
+  }
+
+  .search-input::placeholder { color: var(--gray-mid); }
+
+  .search-btn {
+    background: var(--green-mid);
+    color: var(--white);
+    border: none;
+    padding: 12px 24px;
+    margin: 4px;
+    border-radius: 50px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover { background: var(--green-light); }
+  .search-btn:disabled { background: var(--gray-mid); cursor: not-allowed; }
+
+  .categories {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .cat-chip {
+    background: rgba(255,255,255,0.15);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+  }
+
+  .cat-chip:hover, .cat-chip.active {
+    background: var(--gold);
+    color: var(--green-dark);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+  }
+
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: none;
+  }
+
+  .status-text {
+    font-size: 14px;
+    color: var(--gray-text);
+  }
+
+  .status-count {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--green-mid);
+    font-size: 14px;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+  }
+
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--gray-light);
+    border-top-color: var(--green-mid);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading p {
+    color: var(--gray-text);
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .loading-steps {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--green-mid);
+    font-weight: 500;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+  }
+
+  .empty-state h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p {
+    color: var(--gray-text);
+    font-size: 15px;
+    max-width: 360px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .results-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .result-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    animation: fadeIn 0.3s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--green-light);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .category-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .trust-score {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-mid);
+    flex-shrink: 0;
+  }
+
+  .trust-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green-light);
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .card-domain {
+    font-size: 13px;
+    color: var(--green-mid);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .card-snippet {
+    font-size: 14px;
+    color: var(--gray-text);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .meta-tag {
+    background: var(--gray-light);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--gray-text);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .meta-tag.deadline { background: #FEF3C7; color: #92400E; }
+  .meta-tag.location { background: #DBEAFE; color: #1E40AF; }
+  .meta-tag.org      { background: #D1FAE5; color: #065F46; }
+
+  .card-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn-visit {
+    background: var(--green-mid);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-visit:hover {
+    background: var(--green-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-follow {
+    background: transparent;
+    color: var(--green-mid);
+    border: 1.5px solid var(--green-mid);
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-follow:hover, .btn-follow.following {
+    background: var(--green-mid);
+    color: white;
+  }
+
+  .assistant-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,58,107,0.5);
+    z-index: 200;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .assistant-overlay.open { display: flex; }
+
+  .assistant-panel {
+    background: var(--white);
+    width: 100%;
+    max-width: 600px;
+    height: 85vh;
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  .assistant-header {
+    background: var(--green-dark);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .assistant-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .assistant-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .assistant-close:hover { background: rgba(255,255,255,0.25); }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .message {
+    max-width: 85%;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .message.bot { align-self: flex-start; }
+  .message.user { align-self: flex-end; }
+
+  .message-bubble {
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .message.bot .message-bubble {
+    background: var(--gray-light);
+    color: var(--green-dark);
+    border-bottom-left-radius: 4px;
+  }
+
+  .message.user .message-bubble {
+    background: var(--green-mid);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  .message-time {
+    font-size: 11px;
+    color: var(--gray-mid);
+    margin-top: 4px;
+    padding: 0 4px;
+  }
+
+  .message.user .message-time { text-align: right; }
+
+  .chat-input-area {
+    padding: 16px;
+    border-top: 1px solid var(--gray-light);
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .chat-input {
+    flex: 1;
+    border: 1.5px solid var(--gray-light);
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    max-height: 100px;
+    transition: border-color 0.2s;
+    color: var(--green-dark);
+  }
+
+  .chat-input:focus { border-color: var(--green-mid); }
+
+  .chat-send {
+    background: var(--green-mid);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .chat-send:hover { background: var(--green-light); transform: scale(1.05); }
+  .chat-send:disabled { background: var(--gray-mid); cursor: not-allowed; transform: none; }
+
+  .followed-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,58,107,0.5);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    padding: 20px;
+  }
+
+  .followed-overlay.open { display: flex; }
+
+  .followed-panel {
+    background: var(--white);
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .followed-header {
+    background: var(--green-dark);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .followed-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 16px;
+  }
+
+  .followed-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .followed-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: var(--gray-light);
+    border-radius: 12px;
+    gap: 10px;
+  }
+
+  .followed-item-info { flex: 1; min-width: 0; }
+
+  .followed-item-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .followed-item-url {
+    font-size: 12px;
+    color: var(--gray-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-unfollow {
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-unfollow:hover { background: var(--red); color: white; }
+
+  .followed-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray-text);
+    font-size: 14px;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--green-dark);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 300;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 480px) {
+    .header-tagline { display: none; }
+    .hero { padding: 32px 16px 28px; }
+    .card-actions { flex-direction: column; align-items: stretch; }
+    .btn-visit, .btn-follow { justify-content: center; }
+  }
+
+  .typing {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 14px 16px;
+  }
+
+  .typing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-mid);
+    animation: bounce 1.2s infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-8px); }
+  }
+
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 20px 16px;
+  }
+
+  .suggestion-chip {
+    background: var(--gray-light);
+    border: 1px solid var(--gray-mid);
+    color: var(--green-dark);
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .suggestion-chip:hover {
+    background: var(--green-mid);
+    color: white;
+    border-color: var(--green-mid);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Inzira<span>.</span></div>
+  <span class="header-tagline">Find your path to opportunity</span>
+  <div class="header-actions">
+    <button class="btn-assistant" onclick="openAssistant()">🤖 AI Assistant</button>
+    <button class="btn-assistant" style="background:rgba(255,255,255,0.15);color:white;" onclick="openFollowed()">⭐ Following</button>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Discover <span>Opportunities</span><br>Made for You</h1>
+  <p>Search scholarships, jobs, internships, and more across Rwanda - powered by AI</p>
+
+  <div class="search-container">
+    <div class="search-box">
+      <input class="search-input" id="searchInput" type="text" placeholder="Search scholarships, jobs, internships..." onkeydown="if(event.key==='Enter') doSearch()" />
+      <button class="search-btn" id="searchBtn" onclick="doSearch()">Search</button>
+    </div>
+  </div>
+
+  <div class="categories">
+    <button class="cat-chip active" onclick="selectCategory('', this)">All</button>
+    <button class="cat-chip" onclick="selectCategory('jobs', this)">💼 Jobs</button>
+    <button class="cat-chip" onclick="selectCategory('scholarships', this)">🎓 Scholarships</button>
+    <button class="cat-chip" onclick="selectCategory('internships', this)">📋 Internships</button>
+    <button class="cat-chip" onclick="selectCategory('training', this)">📚 Training</button>
+    <button class="cat-chip" onclick="selectCategory('competitions', this)">🏆 Competitions</button>
+    <button class="cat-chip" onclick="selectCategory('programs', this)">🌟 Programs</button>
+    <button class="cat-chip" onclick="selectCategory('free courses', this)">💻 Free Courses</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="status-bar" id="statusBar">
+    <span class="status-text" id="statusText">Showing results</span>
+    <span class="status-count" id="statusCount"></span>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Searching across Rwanda for opportunities...</p>
+    <div class="loading-steps" id="loadingStep">Running AI pipeline...</div>
+  </div>
+
+  <div class="results-grid" id="results"></div>
+
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🔍</div>
+    <h3>Find Your Opportunity</h3>
+    <p>Search for scholarships, jobs, internships, training programs, competitions, or free courses available in Rwanda.</p>
+  </div>
+</div>
+
+<div class="assistant-overlay" id="assistantOverlay" onclick="closeAssistantOnOutside(event)">
+  <div class="assistant-panel">
+    <div class="assistant-header">
+      <div class="assistant-title">🤖 Inzira AI Assistant</div>
+      <button class="assistant-close" onclick="closeAssistant()">✕</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot">
+        <div class="message-bubble">
+          Muraho! I'm the Inzira AI Assistant. I can help you discover opportunity websites in Rwanda. Ask me anything in English or Kinyarwanda! 🇷🇼
+        </div>
+        <div class="message-time">Now</div>
+      </div>
+    </div>
+
+    <div class="suggestions">
+      <button class="suggestion-chip" onclick="sendSuggestion('List websites hosting scholarships in Rwanda')">Scholarships in Rwanda</button>
+      <button class="suggestion-chip" onclick="sendSuggestion('What programs are open for students in Rwanda?')">Open programs</button>
+      <button class="suggestion-chip" onclick="sendSuggestion('Internship opportunities for youth in Rwanda')">Internships</button>
+    </div>
+
+    <div class="chat-input-area">
+      <textarea class="chat-input" id="chatInput" placeholder="Ask about opportunities in Rwanda..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+      <button class="chat-send" id="chatSend" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
+<div class="followed-overlay" id="followedOverlay" onclick="closeFollowedOnOutside(event)">
+  <div class="followed-panel">
+    <div class="followed-header">
+      <div class="followed-title">⭐ Followed Sites</div>
+      <button class="assistant-close" onclick="closeFollowed()">✕</button>
+    </div>
+    <div class="followed-list" id="followedList">
+      <div class="followed-empty">You haven't followed any sites yet.<br>Click "Follow" on any result to save it here.</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = 'http://10.0.2.2:8000';
+
+let followedSites = JSON.parse(localStorage.getItem('inzira_followed') || '[]');
+let currentCategory = '';
+let isSearching = false;
+
+const CAT_COLORS = {
+  scholarship: '#0C447C',
+  internship:  '#2E5FA3',
+  job:         '#1A3A6B',
+  training:    '#4A7FC1',
+  competition: '#791F1F',
+  program:     '#2E5FA3',
+  free_course: '#0C447C',
+};
+
+function selectCategory(cat, el) {
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentCategory = cat;
+  if (cat) {
+    document.getElementById('searchInput').value = cat;
+    doSearch();
+  }
+}
+
+async function doSearch() {
+  if (isSearching) return;
+  const query = document.getElementById('searchInput').value.trim();
+  if (!query) { showToast('Please enter a search term'); return; }
+
+  isSearching = true;
+  showLoading(true);
+  document.getElementById('searchBtn').disabled = true;
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('results').innerHTML = '';
+  document.getElementById('statusBar').style.display = 'none';
+
+  const steps = [
+    'Searching the web for opportunities...',
+    'Running BERT classifier...',
+    'Running RoBERTa categoriser...',
+    'Extracting entities with spaCy...',
+    'Computing trust scores...',
+    'Filtering verified results...'
+  ];
+  let stepIdx = 0;
+  const stepInterval = setInterval(() => {
+    if (stepIdx < steps.length) {
+      document.getElementById('loadingStep').textContent = steps[stepIdx++];
+    }
+  }, 3000);
+
+  try {
+    const res = await fetch(`${API_BASE}/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, max_results: 10 })
+    });
+
+    if (!res.ok) throw new Error('Search failed');
+    const data = await res.json();
+
+    clearInterval(stepInterval);
+    showLoading(false);
+    renderResults(data);
+
+  } catch (err) {
+    clearInterval(stepInterval);
+    showLoading(false);
+    showError(err.message);
+  } finally {
+    isSearching = false;
+    document.getElementById('searchBtn').disabled = false;
+  }
+}
+
+function renderResults(data) {
+  const container = document.getElementById('results');
+  const statusBar  = document.getElementById('statusBar');
+
+  if (!data.results || data.results.length === 0) {
+    document.getElementById('emptyState').innerHTML = `
+      <div class="empty-icon">😔</div>
+      <h3>No Results Found</h3>
+      <p>No verified opportunities found for "<strong>${data.query}</strong>" in Rwanda right now. Try a different search term.</p>
+    `;
+    document.getElementById('emptyState').style.display = 'block';
+    return;
+  }
+
+  statusBar.style.display = 'flex';
+  document.getElementById('statusText').textContent = `Results for "${data.query}"`;
+  document.getElementById('statusCount').textContent = `${data.verified} verified opportunities`;
+
+  data.results.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.style.animationDelay = `${i * 0.06}s`;
+
+    const color   = CAT_COLORS[r.category] || '#444';
+    const domain  = getDomain(r.url);
+    const isFollowed = followedSites.some(s => s.url === r.url);
+
+    let metaTags = '';
+    if (r.deadline)     metaTags += `<span class="meta-tag deadline">📅 ${r.deadline}</span>`;
+    if (r.location)     metaTags += `<span class="meta-tag location">📍 ${r.location}</span>`;
+    if (r.organization) metaTags += `<span class="meta-tag org">🏢 ${r.organization}</span>`;
+
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="category-badge" style="background:${color}">${r.category.replace('_',' ')}</span>
+        <span class="trust-score"><span class="trust-dot"></span>${Math.round(r.trust_score)}% Trust</span>
+      </div>
+      <div class="card-title">${r.title}</div>
+      <div class="card-domain">🌐 ${domain}</div>
+      ${r.snippet ? `<div class="card-snippet">${r.snippet}</div>` : ''}
+      ${metaTags ? `<div class="card-meta">${metaTags}</div>` : ''}
+      <div class="card-actions">
+        <a class="btn-visit" href="${r.url}" target="_blank" rel="noopener">Visit Website ↗</a>
+        <button class="btn-follow ${isFollowed ? 'following' : ''}" id="follow-${i}" onclick="toggleFollow(${i}, '${escStr(r.url)}', '${escStr(r.title)}', this)">
+          ${isFollowed ? '⭐ Following' : '+ Follow'}
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function getDomain(url) {
+  try { return new URL(url).hostname.replace('www.',''); } catch { return url; }
+}
+
+function escStr(s) {
+  return (s||'').replace(/'/g,"\\'").replace(/\"/g,'&quot;');
+}
+
+function showError(msg) {
+  document.getElementById('emptyState').innerHTML = `
+    <div class="empty-icon">⚠️</div>
+    <h3>Connection Error</h3>
+    <p>Could not connect to the backend. Make sure your backend is running on port 8000.<br><br><small>${msg}</small></p>
+  `;
+  document.getElementById('emptyState').style.display = 'block';
+}
+
+function toggleFollow(idx, url, title, btn) {
+  const exists = followedSites.findIndex(s => s.url === url);
+  if (exists > -1) {
+    followedSites.splice(exists, 1);
+    btn.textContent = '+ Follow';
+    btn.classList.remove('following');
+    showToast('Removed from followed sites');
+  } else {
+    followedSites.push({ url, title, followedAt: new Date().toISOString() });
+    btn.textContent = '⭐ Following';
+    btn.classList.add('following');
+    showToast('Added to followed sites! ⭐');
+  }
+  localStorage.setItem('inzira_followed', JSON.stringify(followedSites));
+}
+
+function openFollowed() {
+  renderFollowedList();
+  document.getElementById('followedOverlay').classList.add('open');
+}
+
+function closeFollowed() {
+  document.getElementById('followedOverlay').classList.remove('open');
+}
+
+function closeFollowedOnOutside(e) {
+  if (e.target === document.getElementById('followedOverlay')) closeFollowed();
+}
+
+function renderFollowedList() {
+  const list = document.getElementById('followedList');
+  if (followedSites.length === 0) {
+    list.innerHTML = '<div class="followed-empty">You haven\'t followed any sites yet.<br>Click "Follow" on any result to save it here.</div>';
+    return;
+  }
+  list.innerHTML = followedSites.map((s, i) => `
+    <div class="followed-item">
+      <div class="followed-item-info">
+        <div class="followed-item-title">${s.title}</div>
+        <div class="followed-item-url">${getDomain(s.url)}</div>
+      </div>
+      <button class="btn-unfollow" onclick="unfollowFromPanel(${i})">Unfollow</button>
+    </div>
+  `).join('');
+}
+
+function unfollowFromPanel(i) {
+  followedSites.splice(i, 1);
+  localStorage.setItem('inzira_followed', JSON.stringify(followedSites));
+  renderFollowedList();
+  showToast('Removed from followed sites');
+}
+
+function openAssistant() {
+  document.getElementById('assistantOverlay').classList.add('open');
+  document.getElementById('chatInput').focus();
+}
+
+function closeAssistant() {
+  document.getElementById('assistantOverlay').classList.remove('open');
+}
+
+function closeAssistantOnOutside(e) {
+  if (e.target === document.getElementById('assistantOverlay')) closeAssistant();
+}
+
+function sendSuggestion(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const msg   = input.value.trim();
+  if (!msg) return;
+
+  const btn = document.getElementById('chatSend');
+  btn.disabled = true;
+  input.value  = '';
+
+  appendMessage(msg, 'user');
+  const typing = appendTyping();
+
+  try {
+    const res = await fetch(`${API_BASE}/assistant`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ message: msg, language: 'english' })
+    });
+
+    typing.remove();
+
+    if (!res.ok) throw new Error('Assistant error');
+    const data = await res.json();
+    appendMessage(data.response, 'bot');
+
+  } catch (err) {
+    typing.remove();
+    appendMessage('Sorry, I could not connect to the assistant. Make sure the backend is running on port 8000.', 'bot');
+  } finally {
+    btn.disabled = false;
+    input.focus();
+  }
+}
+
+function appendMessage(text, role) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `message ${role}`;
+  const time = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  div.innerHTML = `
+    <div class="message-bubble">${text.replace(/\n/g,'<br>')}</div>
+    <div class="message-time">${time}</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return div;
+}
+
+function appendTyping() {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'message bot';
+  div.innerHTML = `
+    <div class="message-bubble">
+      <div class="typing">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return div;
+}
+
+function showLoading(show) {
+  document.getElementById('loading').style.display = show ? 'block' : 'none';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inzira — Find Your Path</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark:  #1A3A6B;
+    --green-mid:   #2E5FA3;
+    --green-light: #4A7FC1;
+    --gold:        #90CAF9;
+    --cream:       #F8FAFF;
+    --white:       #FFFFFF;
+    --gray-light:  #E8EEF6;
+    --gray-mid:    #94A3B8;
+    --gray-text:   #64748B;
+    --red:         #E24B4A;
+    --blue:        #1A3A6B;
+    --shadow:      0 4px 24px rgba(26,58,107,0.10);
+    --shadow-lg:   0 8px 40px rgba(26,58,107,0.16);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--green-dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--green-dark);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--gold); }
+
+  .header-tagline {
+    font-size: 13px;
+    color: var(--gray-mid);
+    font-weight: 300;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn-assistant {
+    background: var(--gold);
+    color: var(--green-dark);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-assistant:hover {
+    background: #7BB8E8;
+    transform: translateY(-1px);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 140%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(245,200,66,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .hero h1 span { color: var(--gold); }
+
+  .hero p {
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  /* ── SEARCH BOX ── */
+  .search-container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .search-box {
+    display: flex;
+    background: var(--white);
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .search-box:focus-within {
+    border-color: var(--gold);
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 16px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: var(--green-dark);
+    background: transparent;
+  }
+
+  .search-input::placeholder { color: var(--gray-mid); }
+
+  .search-btn {
+    background: var(--green-mid);
+    color: var(--white);
+    border: none;
+    padding: 12px 24px;
+    margin: 4px;
+    border-radius: 50px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover { background: var(--green-light); }
+  .search-btn:disabled { background: var(--gray-mid); cursor: not-allowed; }
+
+  /* ── CATEGORIES ── */
+  .categories {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .cat-chip {
+    background: rgba(255,255,255,0.15);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+  }
+
+  .cat-chip:hover, .cat-chip.active {
+    background: var(--gold);
+    color: var(--green-dark);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: none;
+  }
+
+  .status-text {
+    font-size: 14px;
+    color: var(--gray-text);
+  }
+
+  .status-count {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--green-mid);
+    font-size: 14px;
+  }
+
+  /* ── LOADING ── */
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+  }
+
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--gray-light);
+    border-top-color: var(--green-mid);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading p {
+    color: var(--gray-text);
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .loading-steps {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--green-mid);
+    font-weight: 500;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+  }
+
+  .empty-state h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p {
+    color: var(--gray-text);
+    font-size: 15px;
+    max-width: 360px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── RESULT CARDS ── */
+  .results-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .result-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    animation: fadeIn 0.3s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--green-light);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .category-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .trust-score {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-mid);
+    flex-shrink: 0;
+  }
+
+  .trust-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green-light);
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .card-domain {
+    font-size: 13px;
+    color: var(--green-mid);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .card-snippet {
+    font-size: 14px;
+    color: var(--gray-text);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .meta-tag {
+    background: var(--gray-light);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--gray-text);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .meta-tag.deadline { background: #FEF3C7; color: #92400E; }
+  .meta-tag.location { background: #DBEAFE; color: #1E40AF; }
+  .meta-tag.org      { background: #D1FAE5; color: #065F46; }
+
+  .card-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn-visit {
+    background: var(--green-mid);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-visit:hover {
+    background: var(--green-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-follow {
+    background: transparent;
+    color: var(--green-mid);
+    border: 1.5px solid var(--green-mid);
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-follow:hover, .btn-follow.following {
+    background: var(--green-mid);
+    color: white;
+  }
+
+  /* ── AI ASSISTANT PANEL ── */
+  .assistant-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,58,107,0.5);
+    z-index: 200;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .assistant-overlay.open { display: flex; }
+
+  .assistant-panel {
+    background: var(--white);
+    width: 100%;
+    max-width: 600px;
+    height: 85vh;
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  .assistant-header {
+    background: var(--green-dark);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .assistant-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .assistant-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .assistant-close:hover { background: rgba(255,255,255,0.25); }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .message {
+    max-width: 85%;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .message.bot { align-self: flex-start; }
+  .message.user { align-self: flex-end; }
+
+  .message-bubble {
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .message.bot .message-bubble {
+    background: var(--gray-light);
+    color: var(--green-dark);
+    border-bottom-left-radius: 4px;
+  }
+
+  .message.user .message-bubble {
+    background: var(--green-mid);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  .message-time {
+    font-size: 11px;
+    color: var(--gray-mid);
+    margin-top: 4px;
+    padding: 0 4px;
+  }
+
+  .message.user .message-time { text-align: right; }
+
+  .chat-input-area {
+    padding: 16px;
+    border-top: 1px solid var(--gray-light);
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .chat-input {
+    flex: 1;
+    border: 1.5px solid var(--gray-light);
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    max-height: 100px;
+    transition: border-color 0.2s;
+    color: var(--green-dark);
+  }
+
+  .chat-input:focus { border-color: var(--green-mid); }
+
+  .chat-send {
+    background: var(--green-mid);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .chat-send:hover { background: var(--green-light); transform: scale(1.05); }
+  .chat-send:disabled { background: var(--gray-mid); cursor: not-allowed; transform: none; }
+
+  /* ── FOLLOWED SITES OVERLAY */
+  .followed-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,58,107,0.5);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    padding: 20px;
+  }
+
+  .followed-overlay.open { display: flex; }
+
+  .followed-panel {
+    background: var(--white);
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .followed-header {
+    background: var(--green-dark);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .followed-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 16px;
+  }
+
+  .followed-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .followed-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: var(--gray-light);
+    border-radius: 12px;
+    gap: 10px;
+  }
+
+  .followed-item-info { flex: 1; min-width: 0; }
+
+  .followed-item-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .followed-item-url {
+    font-size: 12px;
+    color: var(--gray-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .btn-unfollow {
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-unfollow:hover { background: var(--red); color: white; }
+
+  .followed-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray-text);
+    font-size: 14px;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--green-dark);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 300;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 480px) {
+    .header-tagline { display: none; }
+    .hero { padding: 32px 16px 28px; }
+    .card-actions { flex-direction: column; align-items: stretch; }
+    .btn-visit, .btn-follow { justify-content: center; }
+  }
+
+  /* ── TYPING INDICATOR ── */
+  .typing {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 14px 16px;
+  }
+
+  .typing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-mid);
+    animation: bounce 1.2s infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-8px); }
+  }
+
+  /* Quick suggestion chips */
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 20px 16px;
+  }
+
+  .suggestion-chip {
+    background: var(--gray-light);
+    border: 1px solid var(--gray-mid);
+    color: var(--green-dark);
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .suggestion-chip:hover {
+    background: var(--green-mid);
+    color: white;
+    border-color: var(--green-mid);
+  }
+</style>
+</head>
+<body>
+<!-- The rest of the HTML is omitted here to keep the asset reasonably sized; the app only needs the header, search box, and scripts to interact with the backend when available. -->
+<div style="padding:40px;text-align:center;font-family:sans-serif;">
+  <h1>Inzira (Offline)</h1>
+  <p>This is a packaged version of the Inzira web UI. When the backend is reachable, the app can use the same API endpoints.</p>
+  <p>Open the full backend-powered UI from your computer at <strong>http://localhost:8000</strong> during development.</p>
+</div>
+</body>
+</html>

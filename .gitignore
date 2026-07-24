@@ -1,0 +1,72 @@
+# ── Secrets & local config ─────────────────────────────────────
+.env
+.env.*
+!.env.example
+**/google-services*.json
+.firebase/
+
+# ── ML models (download via scripts or deploy bundle) ──────────
+inzira-backend/models/
+bert_classifier_model/model.safetensors
+*.safetensors
+*.pkl
+*.pt
+*.bin
+*.onnx
+*.h5
+
+# ── Datasets (large / generated) ───────────────────────────────
+inzira_dataset/labeled_data/
+inzira_dataset/raw_pages/*.xlsx
+
+# ── Databases & deploy bundles ─────────────────────────────────
+*.db
+
+# Local run artifacts / reports
+inzira-backend/harvest_coverage_output.txt
+inzira-backend/harvest_run_live.log
+inzira-backend/igire_double_harvest.txt
+inzira-backend/igire_proof.txt
+inzira-backend/tmp_job_search.json
+inzira-backend/verdict_*.txt
+inzira-backend/verdict_*.json
+inzira-backend/*.log
+inzira-backend/curation_dumps/
+inzira-backend/source_accountability/
+outputs/
+Inzira_Full_Report*.pdf
+Inzira_Full_Report*.docx
+docs/
+inzira-backend/deploy/*.zip
+inzira-backend/inzira_deploy_assets.zip
+
+# ── Python ─────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# ── Android / IDE / build ──────────────────────────────────────
+.idea/
+.gradle/
+.vscode/
+*.iml
+Inzira-app/build/
+Inzira-app/.gradle/
+Inzira-app/local.properties
+Inzira-app/keystore.properties
+*.keystore
+
+# ── OS ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Spreadsheets (raw scrape exports) ──────────────────────────
+*.xlsx
+inzira-backend/harvest_log*.txt
+
+# ── Presentation files (saved outside repo) ────────────────────
+*.pptx
+*.mp4
+Inzira_slides*

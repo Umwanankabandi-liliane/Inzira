@@ -1,0 +1,55 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Deploy: connect GitHub repo, set Root Directory to inzira-backend, or use this blueprint.
+
+services:
+  - type: web
+    name: inzira
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: standard
+    region: frankfurt
+    healthCheckPath: /health
+    envVars:
+      - key: INZIRA_ENV
+        value: production
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: inzira-db
+          property: connectionString
+      - key: INZIRA_FIREBASE_PROJECT_ID
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.1-8b-instant
+      - key: INZIRA_MIFOTRA_STAFF_PASSWORD
+        sync: false
+      - key: INZIRA_MIFOTRA_EMAIL_DOMAINS
+        value: mifotra.gov.rw
+      - key: INZIRA_VAPID_PUBLIC_KEY
+        sync: false
+      - key: INZIRA_VAPID_PRIVATE_KEY
+        sync: false
+      - key: INZIRA_VAPID_CLAIMS_EMAIL
+        value: mailto:alerts@inzira.rw
+      - key: INZIRA_ASSETS_BUNDLE_URL
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: INZIRA_ADMIN_EMAILS
+        sync: false
+      - key: RATE_LIMIT_MAX_PER_MIN
+        value: "120"
+
+databases:
+  - name: inzira-db
+    plan: basic-256mb
+    databaseName: inzira
+    user: inzira

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rwanda_districts">
+        <item>Select your district</item>
+        <item>Gasabo</item>
+        <item>Kicukiro</item>
+        <item>Nyarugenge</item>
+        <item>Bugesera</item>
+        <item>Gatsibo</item>
+        <item>Kayonza</item>
+        <item>Kirehe</item>
+        <item>Ngoma</item>
+        <item>Nyagatare</item>
+        <item>Rwamagana</item>
+        <item>Huye</item>
+        <item>Gisagara</item>
+        <item>Nyamagabe</item>
+        <item>Nyanza</item>
+        <item>Nyaruguru</item>
+        <item>Ruhango</item>
+        <item>Kamonyi</item>
+        <item>Muhanga</item>
+        <item>Karongi</item>
+        <item>Ngororero</item>
+        <item>Nyabihu</item>
+        <item>Rubavu</item>
+        <item>Rusizi</item>
+        <item>Rutsiro</item>
+        <item>Burera</item>
+        <item>Gakenke</item>
+        <item>Gicumbi</item>
+        <item>Musanze</item>
+        <item>Rulindo</item>
+    </string-array>
+
+    <string-array name="age_ranges">
+        <item>Select age</item>
+        <item>Under 18</item>
+        <item>18 - 25</item>
+        <item>26 - 30</item>
+        <item>31 - 35</item>
+        <item>36+</item>
+    </string-array>
+
+    <string-array name="education_levels">
+        <item>Select education</item>
+        <item>Secondary school</item>
+        <item>TVET / Technical</item>
+        <item>Bachelor degree</item>
+        <item>Master degree</item>
+        <item>PhD / Research</item>
+        <item>Self-taught / Other</item>
+    </string-array>
+
+    <string-array name="interest_fields">
+        <item>Select interests</item>
+        <item>Technology</item>
+        <item>Business</item>
+        <item>Healthcare</item>
+        <item>Education</item>
+        <item>Agriculture</item>
+        <item>Engineering</item>
+        <item>Arts &amp; Design</item>
+        <item>Public service</item>
+        <item>Entrepreneurship</item>
+        <item>Science &amp; Research</item>
+    </string-array>
+</resources>

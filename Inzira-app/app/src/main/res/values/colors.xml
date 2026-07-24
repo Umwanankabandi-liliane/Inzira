@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_dark_blue">#1A3A6B</color>
+    <color name="medium_blue">#2E5FA3</color>
+    <color name="white">#FFFFFF</color>
+    <color name="background_light">#F6F8FB</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="card_border">#E3E8EE</color>
+    <color name="border_subtle">#E6EBF1</color>
+    <color name="icon_btn_bg">#F1F5F9</color>
+    <color name="text_primary">#0A2540</color>
+    <color name="text_secondary">#425466</color>
+    <color name="text_muted">#8898AA</color>
+    <color name="trust_score_bar">#1A3A6B</color>
+    <color name="badge_blue_background">#E8F0FE</color>
+    <color name="badge_blue_text">#1A3A6B</color>
+    <color name="urgent_badge_background">#FEF2F2</color>
+    <color name="urgent_badge_text">#991B1B</color>
+    <color name="error_red">#DF1B41</color>
+    <color name="success_green">#166534</color>
+</resources>

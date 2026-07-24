@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="6dp">
+
+    <TextView
+        android:id="@+id/tvLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        tools:text="Scholarships" />
+
+    <LinearLayout
+        android:id="@+id/barContainer"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="2"
+        android:background="@drawable/bg_dashboard_bar_bg"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <View
+            android:id="@+id/barFill"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="60"
+            android:background="@drawable/bg_dashboard_bar_fill"
+            tools:layout_width="120dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="12sp"
+        tools:text="524" />
+
+</LinearLayout>
+

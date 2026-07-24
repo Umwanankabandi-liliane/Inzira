@@ -1,0 +1,23 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+pydantic
+requests
+beautifulsoup4
+numpy
+torch
+spacy
+transformers
+scikit-learn==1.6.1
+ddgs
+groq
+python-dateutil
+
+# Persistence / auth (production)
+SQLAlchemy>=2.0
+psycopg2-binary
+alembic
+firebase-admin
+PyJWT>=2.8
+cryptography>=42.0
+pywebpush>=2.0

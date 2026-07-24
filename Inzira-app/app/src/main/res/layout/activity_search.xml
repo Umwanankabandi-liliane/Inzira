@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:orientation="vertical"
+    tools:context=".SearchActivity">
+
+    <LinearLayout
+        android:id="@+id/headerSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_page_header"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBackToLogin"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_icon_btn"
+                android:contentDescription="@string/back_description"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_left"
+                app:tint="@color/text_primary" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvHelloLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Muraho,"
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp"
+                    tools:text="Muraho," />
+
+                <TextView
+                    android:id="@+id/tvHelloName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Liliane"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Liliane" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnNotifications"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_icon_btn"
+                android:contentDescription="@string/notifications_description"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_bell"
+                app:tint="@color/text_primary" />
+
+            <ImageButton
+                android:id="@+id/btnProfile"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_icon_btn"
+                android:contentDescription="@string/profile_description"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_user"
+                app:tint="@color/text_primary" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/contentScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_search_box"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="6dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_search_blue"
+                    app:tint="@color/text_muted" />
+
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="Search scholarships, jobs, programs..."
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_muted"
+                    android:textSize="14sp" />
+
+                <ImageButton
+                    android:id="@+id/btnSearch"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_btn_blue"
+                    android:contentDescription="@string/search_description"
+                    android:padding="6dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvVerifiedSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="AI-verified · Republic of Rwanda youth platform"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                tools:text="AI-verified · Republic of Rwanda youth platform" />
+
+            <HorizontalScrollView
+                android:id="@+id/categoryScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:clipToPadding="false"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chipAll"
+                        style="@style/FilterChipActive"
+                        android:text="All" />
+
+                    <TextView
+                        android:id="@+id/chipScholarships"
+                        style="@style/FilterChip"
+                        android:text="Scholarships" />
+
+                    <TextView
+                        android:id="@+id/chipJobs"
+                        style="@style/FilterChip"
+                        android:text="Jobs" />
+
+                    <TextView
+                        android:id="@+id/chipInternships"
+                        style="@style/FilterChip"
+                        android:text="Internships" />
+
+                    <TextView
+                        android:id="@+id/chipPrograms"
+                        style="@style/FilterChip"
+                        android:text="Programs" />
+
+                    <TextView
+                        android:id="@+id/chipTraining"
+                        style="@style/FilterChip"
+                        android:text="Training" />
+
+                    <TextView
+                        android:id="@+id/chipCompetitions"
+                        style="@style/FilterChip"
+                        android:text="Competitions" />
+
+                    <TextView
+                        android:id="@+id/chipCourses"
+                        style="@style/FilterChip"
+                        android:layout_marginEnd="0dp"
+                        android:text="Free Courses" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/tvHowItWorksTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="How Inzira works"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/howItWorksCard"
+                style="@style/InziraCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout style="@style/InziraStepRow">
+
+                    <TextView
+                        style="@style/InziraStepNumber"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:text="1" />
+
+                    <TextView
+                        android:id="@+id/tvStep1"
+                        style="@style/InziraStepText"
+                        android:text="Type what you are looking for" />
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/InziraStepRow">
+
+                    <TextView
+                        style="@style/InziraStepNumber"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:text="2" />
+
+                    <TextView
+                        android:id="@+id/tvStep2"
+                        style="@style/InziraStepText"
+                        android:text="Inzira scans the web in real time" />
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/InziraStepRow">
+
+                    <TextView
+                        style="@style/InziraStepNumber"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:text="3" />
+
+                    <TextView
+                        android:id="@+id/tvStep3"
+                        style="@style/InziraStepText"
+                        android:text="AI verifies trust and category" />
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/InziraStepRow">
+
+                    <TextView
+                        style="@style/InziraStepNumber"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:text="4" />
+
+                    <TextView
+                        android:id="@+id/tvStep4"
+                        style="@style/InziraStepText"
+                        android:layout_marginBottom="0dp"
+                        android:text="You visit the source and apply" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_nav"
+        app:itemIconTint="@color/bottom_nav_item_color"
+        app:itemTextColor="@color/bottom_nav_item_color"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
+
+</LinearLayout>

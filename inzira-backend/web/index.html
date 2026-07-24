@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Inzira — Rwanda youth opportunity app. AI-verified scholarships, jobs, and programs.">
+  <meta name="theme-color" content="#f5c518">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Inzira">
+  <title>Inzira</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/assets/icons/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css?v=124">
+  <link rel="stylesheet" href="/assets/css/radar.css?v=89">
+  <link rel="stylesheet" href="/assets/css/opportunity-theme.css?v=109">
+  <link rel="stylesheet" href="/assets/css/wow-features.css?v=90">
+  <link rel="stylesheet" href="/assets/css/auth-theme.css?v=91">
+</head>
+<body>
+  <div class="app-viewport" id="appViewport">
+    <div id="app" class="app-shell"></div>
+    <nav id="bottomNav" class="bottom-nav hidden" aria-label="Main navigation"></nav>
+  </div>
+  <div id="modalRoot" class="modal-root hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-panel" id="modalPanel"></div>
+  </div>
+  <div id="previewRoot" class="preview-root hidden" aria-hidden="true">
+    <div class="preview-backdrop" id="previewBackdrop"></div>
+    <div class="preview-panel">
+      <div class="preview-toolbar">
+        <span id="previewTitle" class="preview-title"></span>
+        <div class="preview-actions">
+          <a id="previewOpenExternal" class="btn btn-outline btn-sm" href="#" target="_blank" rel="noopener">Open</a>
+          <button type="button" class="btn btn-ghost btn-sm" id="previewClose">Close</button>
+        </div>
+      </div>
+      <iframe id="previewFrame" class="preview-frame" title="Website preview" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <!-- Firebase Auth (email/password + phone OTP) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script>
+    // Inzira Web app (Firebase Project settings → Inzira Web)
+    window.INZIRA_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyCTsM86Abz9H9O5Uv6gMPakXVLF_kAdP0s",
+      authDomain: "inzira-52474.firebaseapp.com",
+      databaseURL: "https://inzira-52474-default-rtdb.firebaseio.com",
+      projectId: "inzira-52474",
+      storageBucket: "inzira-52474.firebasestorage.app",
+      messagingSenderId: "504332884635",
+      appId: "1:504332884635:web:a244877c09c749b7ec443e"
+    };
+    // Set this when you have an APK on Google Drive or similar:
+    // window.INZIRA_APK_URL = 'https://drive.google.com/...';
+  </script>
+  <script src="/assets/js/rwanda-map.js?v=89"></script>
+  <script src="/assets/js/api.js?v=131"></script>
+  <script src="/assets/js/i18n.js?v=131"></script>
+  <script src="/assets/js/wow-features.js?v=131"></script>
+  <script src="/assets/js/app.js?v=131"></script>
+</body>
+</html>
